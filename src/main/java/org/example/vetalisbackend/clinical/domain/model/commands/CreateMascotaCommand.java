@@ -8,6 +8,7 @@ public record CreateMascotaCommand(
         LocalDate fechaNacimiento,
         Double peso,
         String estado,
+        String alergias,
         Long clienteId,
         Long razaId
 ) {}

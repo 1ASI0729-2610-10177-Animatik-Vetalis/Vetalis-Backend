@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.vetalisbackend.clinical.application.commandservices.MascotaCommandService;
 import org.example.vetalisbackend.clinical.application.queryservices.ConsultaQueryService;
 import org.example.vetalisbackend.clinical.application.queryservices.MascotaQueryService;
+import org.example.vetalisbackend.clinical.domain.repositories.ConsultaRepository;
 import org.example.vetalisbackend.clinical.domain.model.commands.CreateMascotaCommand;
 import org.example.vetalisbackend.clinical.interfaces.rest.resources.ConsultaResource;
 import org.example.vetalisbackend.clinical.interfaces.rest.resources.CreateMascotaResource;
@@ -24,19 +25,22 @@ public class MascotaController {
     private final MascotaCommandService mascotaCommandService;
     private final MascotaQueryService mascotaQueryService;
     private final ConsultaQueryService consultaQueryService;
+    private final ConsultaRepository consultaRepository;
 
     public MascotaController(MascotaCommandService mascotaCommandService,
                              MascotaQueryService mascotaQueryService,
-                             ConsultaQueryService consultaQueryService) {
+                             ConsultaQueryService consultaQueryService,
+                             ConsultaRepository consultaRepository) {
         this.mascotaCommandService = mascotaCommandService;
         this.mascotaQueryService = mascotaQueryService;
         this.consultaQueryService = consultaQueryService;
+        this.consultaRepository = consultaRepository;
     }
 
     @PostMapping
     public ResponseEntity<MascotaResource> create(@RequestBody @Valid CreateMascotaResource resource) {
         CreateMascotaCommand command = new CreateMascotaCommand(resource.nombre(), resource.sexo(),
-                resource.fechaNacimiento(), resource.peso(), resource.estado(),
+                resource.fechaNacimiento(), resource.peso(), resource.estado(), resource.alergias(),
                 resource.clienteId(), resource.razaId());
         return mascotaCommandService.handle(command)
                 .map(m -> ResponseEntity.status(HttpStatus.CREATED)
@@ -45,9 +49,14 @@ public class MascotaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MascotaResource>> getAll(@RequestParam(required = false) Long clienteId) {
+    public ResponseEntity<List<MascotaResource>> getAll(
+            @RequestParam(required = false) Long clienteId,
+            @RequestParam(required = false) String nombre) {
         List<MascotaResource> resources;
-        if (clienteId != null) {
+        if (nombre != null && !nombre.isBlank()) {
+            resources = mascotaQueryService.findByNombre(nombre).stream()
+                    .map(MascotaResourceFromEntityAssembler::fromDomainModel).toList();
+        } else if (clienteId != null) {
             resources = mascotaQueryService.findByClienteId(clienteId).stream()
                     .map(MascotaResourceFromEntityAssembler::fromDomainModel).toList();
         } else {
@@ -65,9 +74,17 @@ public class MascotaController {
     }
 
     @GetMapping("/{id}/historial")
-    public ResponseEntity<List<ConsultaResource>> getHistorial(@PathVariable Long id) {
-        List<ConsultaResource> consultas = consultaQueryService.findByMascotaId(id).stream()
-                .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+    public ResponseEntity<List<ConsultaResource>> getHistorial(
+            @PathVariable Long id,
+            @RequestParam(required = false) String tipo) {
+        List<ConsultaResource> consultas;
+        if (tipo != null && !tipo.isBlank()) {
+            consultas = consultaRepository.findByMascotaIdAndTipo(id, tipo).stream()
+                    .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+        } else {
+            consultas = consultaRepository.findByMascotaIdOrderByFechaDesc(id).stream()
+                    .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+        }
         return ResponseEntity.ok(consultas);
     }
 
@@ -75,7 +92,7 @@ public class MascotaController {
     public ResponseEntity<MascotaResource> update(@PathVariable Long id,
                                                   @RequestBody @Valid CreateMascotaResource resource) {
         CreateMascotaCommand command = new CreateMascotaCommand(resource.nombre(), resource.sexo(),
-                resource.fechaNacimiento(), resource.peso(), resource.estado(),
+                resource.fechaNacimiento(), resource.peso(), resource.estado(), resource.alergias(),
                 resource.clienteId(), resource.razaId());
         return mascotaCommandService.update(id, command)
                 .map(m -> ResponseEntity.ok(MascotaResourceFromEntityAssembler.fromDomainModel(m)))

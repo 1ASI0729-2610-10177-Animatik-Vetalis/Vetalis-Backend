@@ -19,6 +19,8 @@ public class Tratamiento {
     @Column(nullable = false)
     private Long consultaId;
 
+    private Long medicamentoId;
+
     @Column(columnDefinition = "TEXT")
     private String descripcion;
 
@@ -36,8 +38,10 @@ public class Tratamiento {
 
     public Tratamiento() {}
 
-    public Tratamiento(Long consultaId, String descripcion, String dosis, String frecuencia, String duracion) {
+    public Tratamiento(Long consultaId, Long medicamentoId, String descripcion, String dosis,
+                       String frecuencia, String duracion) {
         this.consultaId = consultaId;
+        this.medicamentoId = medicamentoId;
         this.descripcion = descripcion;
         this.dosis = dosis;
         this.frecuencia = frecuencia;
@@ -46,12 +50,14 @@ public class Tratamiento {
 
     public Long getId() { return id; }
     public Long getConsultaId() { return consultaId; }
+    public Long getMedicamentoId() { return medicamentoId; }
     public String getDescripcion() { return descripcion; }
     public String getDosis() { return dosis; }
     public String getFrecuencia() { return frecuencia; }
     public String getDuracion() { return duracion; }
 
     public void setConsultaId(Long consultaId) { this.consultaId = consultaId; }
+    public void setMedicamentoId(Long medicamentoId) { this.medicamentoId = medicamentoId; }
     public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public void setDosis(String dosis) { this.dosis = dosis; }
     public void setFrecuencia(String frecuencia) { this.frecuencia = frecuencia; }

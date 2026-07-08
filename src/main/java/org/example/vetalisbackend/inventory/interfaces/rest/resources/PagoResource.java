@@ -8,5 +8,10 @@ public record PagoResource(
         Double monto,
         String metodoPago,
         LocalDateTime fechaPago,
-        String estado
+        String estado,
+        Long medicamentoId,
+        Integer cantidad,
+        Double descuento,
+        Boolean anulado,
+        String motivoAnulacion
 ) {}

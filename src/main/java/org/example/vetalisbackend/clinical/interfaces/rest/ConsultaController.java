@@ -31,7 +31,8 @@ public class ConsultaController {
     public ResponseEntity<ConsultaResource> create(@RequestBody @Valid CreateConsultaResource resource) {
         CreateConsultaCommand command = new CreateConsultaCommand(resource.mascotaId(), resource.veterinarioId(),
                 resource.fecha(), resource.tipo(), resource.subjetivo(), resource.objetivo(),
-                resource.evaluacion(), resource.plan(), resource.estado(), resource.diagnostico());
+                resource.evaluacion(), resource.plan(), resource.estado(), resource.diagnostico(),
+                resource.temperatura());
         return consultaCommandService.handle(command)
                 .map(c -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(ConsultaResourceFromEntityAssembler.fromDomainModel(c)))
@@ -63,8 +64,16 @@ public class ConsultaController {
                                                    @RequestBody @Valid CreateConsultaResource resource) {
         CreateConsultaCommand command = new CreateConsultaCommand(resource.mascotaId(), resource.veterinarioId(),
                 resource.fecha(), resource.tipo(), resource.subjetivo(), resource.objetivo(),
-                resource.evaluacion(), resource.plan(), resource.estado(), resource.diagnostico());
+                resource.evaluacion(), resource.plan(), resource.estado(), resource.diagnostico(),
+                resource.temperatura());
         return consultaCommandService.update(id, command)
+                .map(c -> ResponseEntity.ok(ConsultaResourceFromEntityAssembler.fromDomainModel(c)))
+                .orElse(ResponseEntity.status(org.springframework.http.HttpStatus.CONFLICT).build());
+    }
+
+    @PatchMapping("/{id}/cerrar")
+    public ResponseEntity<ConsultaResource> cerrar(@PathVariable Long id) {
+        return consultaCommandService.cerrar(id)
                 .map(c -> ResponseEntity.ok(ConsultaResourceFromEntityAssembler.fromDomainModel(c)))
                 .orElse(ResponseEntity.notFound().build());
     }

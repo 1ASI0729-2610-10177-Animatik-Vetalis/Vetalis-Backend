@@ -44,6 +44,11 @@ public class Consulta {
     @Column(columnDefinition = "TEXT")
     private String diagnostico;
 
+    private Double temperatura;
+
+    @Column(nullable = false)
+    private Boolean cerrada = false;
+
     @CreatedDate
     @Column(nullable = false, updatable = false)
     private Date createdAt;
@@ -56,7 +61,7 @@ public class Consulta {
 
     public Consulta(Long mascotaId, Long veterinarioId, LocalDateTime fecha, String tipo,
                     String subjetivo, String objetivo, String evaluacion, String plan,
-                    String estado, String diagnostico) {
+                    String estado, String diagnostico, Double temperatura) {
         this.mascotaId = mascotaId;
         this.veterinarioId = veterinarioId;
         this.fecha = fecha;
@@ -67,6 +72,8 @@ public class Consulta {
         this.plan = plan;
         this.estado = estado;
         this.diagnostico = diagnostico;
+        this.temperatura = temperatura;
+        this.cerrada = false;
     }
 
     public Long getId() { return id; }
@@ -80,6 +87,8 @@ public class Consulta {
     public String getPlan() { return plan; }
     public String getEstado() { return estado; }
     public String getDiagnostico() { return diagnostico; }
+    public Double getTemperatura() { return temperatura; }
+    public Boolean getCerrada() { return cerrada; }
 
     public void setMascotaId(Long mascotaId) { this.mascotaId = mascotaId; }
     public void setVeterinarioId(Long veterinarioId) { this.veterinarioId = veterinarioId; }
@@ -91,4 +100,6 @@ public class Consulta {
     public void setPlan(String plan) { this.plan = plan; }
     public void setEstado(String estado) { this.estado = estado; }
     public void setDiagnostico(String diagnostico) { this.diagnostico = diagnostico; }
+    public void setTemperatura(Double temperatura) { this.temperatura = temperatura; }
+    public void setCerrada(Boolean cerrada) { this.cerrada = cerrada; }
 }

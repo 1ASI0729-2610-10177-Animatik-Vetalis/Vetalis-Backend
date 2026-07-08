@@ -28,6 +28,9 @@ public class Mascota {
 
     private String estado;
 
+    @Column(columnDefinition = "TEXT")
+    private String alergias;
+
     @Column(nullable = false)
     private Long clienteId;
 
@@ -44,12 +47,13 @@ public class Mascota {
     public Mascota() {}
 
     public Mascota(String nombre, String sexo, LocalDate fechaNacimiento, Double peso,
-                   String estado, Long clienteId, Long razaId) {
+                   String estado, String alergias, Long clienteId, Long razaId) {
         this.nombre = nombre;
         this.sexo = sexo;
         this.fechaNacimiento = fechaNacimiento;
         this.peso = peso;
         this.estado = estado;
+        this.alergias = alergias;
         this.clienteId = clienteId;
         this.razaId = razaId;
     }
@@ -60,6 +64,7 @@ public class Mascota {
     public LocalDate getFechaNacimiento() { return fechaNacimiento; }
     public Double getPeso() { return peso; }
     public String getEstado() { return estado; }
+    public String getAlergias() { return alergias; }
     public Long getClienteId() { return clienteId; }
     public Long getRazaId() { return razaId; }
 
@@ -68,6 +73,7 @@ public class Mascota {
     public void setFechaNacimiento(LocalDate fechaNacimiento) { this.fechaNacimiento = fechaNacimiento; }
     public void setPeso(Double peso) { this.peso = peso; }
     public void setEstado(String estado) { this.estado = estado; }
+    public void setAlergias(String alergias) { this.alergias = alergias; }
     public void setClienteId(Long clienteId) { this.clienteId = clienteId; }
     public void setRazaId(Long razaId) { this.razaId = razaId; }
 }

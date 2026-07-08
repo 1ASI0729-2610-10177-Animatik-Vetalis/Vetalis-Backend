@@ -12,6 +12,7 @@ public class MascotaResourceFromEntityAssembler {
                 mascota.getFechaNacimiento(),
                 mascota.getPeso(),
                 mascota.getEstado(),
+                mascota.getAlergias(),
                 mascota.getClienteId(),
                 mascota.getRazaId()
         );

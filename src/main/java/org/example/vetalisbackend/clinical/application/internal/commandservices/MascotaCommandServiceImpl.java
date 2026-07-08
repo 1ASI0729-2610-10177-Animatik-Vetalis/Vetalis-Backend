@@ -20,7 +20,7 @@ public class MascotaCommandServiceImpl implements MascotaCommandService {
     @Override
     public Optional<Mascota> handle(CreateMascotaCommand command) {
         Mascota mascota = new Mascota(command.nombre(), command.sexo(), command.fechaNacimiento(),
-                command.peso(), command.estado(), command.clienteId(), command.razaId());
+                command.peso(), command.estado(), command.alergias(), command.clienteId(), command.razaId());
         return Optional.of(mascotaRepository.save(mascota));
     }
 
@@ -32,6 +32,7 @@ public class MascotaCommandServiceImpl implements MascotaCommandService {
             m.setFechaNacimiento(command.fechaNacimiento());
             m.setPeso(command.peso());
             m.setEstado(command.estado());
+            m.setAlergias(command.alergias());
             m.setClienteId(command.clienteId());
             m.setRazaId(command.razaId());
             return mascotaRepository.save(m);

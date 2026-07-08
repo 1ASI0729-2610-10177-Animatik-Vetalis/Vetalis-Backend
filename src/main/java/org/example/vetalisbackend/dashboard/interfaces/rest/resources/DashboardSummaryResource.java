@@ -7,6 +7,7 @@ public record DashboardSummaryResource(
         long pacientesActivos,
         long hospitalizados,
         long vacunasAplicadas,
+        double ingresosDia,
         List<ProximaCitaResource> proximasCitas,
         List<ActividadRecienteResource> actividadReciente
 ) {}

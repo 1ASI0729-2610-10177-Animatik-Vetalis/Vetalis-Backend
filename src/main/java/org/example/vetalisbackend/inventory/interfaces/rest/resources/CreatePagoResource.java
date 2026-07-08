@@ -21,5 +21,12 @@ public record CreatePagoResource(
         LocalDateTime fechaPago,
 
         @NotBlank @Size(max = 20)
-        String estado
+        String estado,
+
+        Long medicamentoId,
+
+        @Positive
+        Integer cantidad,
+
+        Double descuento
 ) {}

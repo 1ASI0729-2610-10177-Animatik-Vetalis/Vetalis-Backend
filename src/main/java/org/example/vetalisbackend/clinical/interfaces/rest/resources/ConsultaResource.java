@@ -13,5 +13,7 @@ public record ConsultaResource(
         String evaluacion,
         String plan,
         String estado,
-        String diagnostico
+        String diagnostico,
+        Double temperatura,
+        Boolean cerrada
 ) {}

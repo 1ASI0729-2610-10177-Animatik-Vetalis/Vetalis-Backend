@@ -16,7 +16,9 @@ public class ConsultaResourceFromEntityAssembler {
                 consulta.getEvaluacion(),
                 consulta.getPlan(),
                 consulta.getEstado(),
-                consulta.getDiagnostico()
+                consulta.getDiagnostico(),
+                consulta.getTemperatura(),
+                consulta.getCerrada()
         );
     }
 }

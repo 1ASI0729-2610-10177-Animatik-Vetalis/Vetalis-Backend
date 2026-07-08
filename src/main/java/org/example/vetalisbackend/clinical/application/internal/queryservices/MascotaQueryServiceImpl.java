@@ -31,4 +31,9 @@ public class MascotaQueryServiceImpl implements MascotaQueryService {
     public List<Mascota> findByClienteId(Long clienteId) {
         return mascotaRepository.findByClienteId(clienteId);
     }
+
+    @Override
+    public List<Mascota> findByNombre(String nombre) {
+        return mascotaRepository.findByNombreContainingIgnoreCase(nombre);
+    }
 }

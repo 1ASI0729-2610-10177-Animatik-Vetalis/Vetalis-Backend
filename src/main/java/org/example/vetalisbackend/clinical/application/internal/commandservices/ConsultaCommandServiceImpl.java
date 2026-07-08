@@ -21,13 +21,14 @@ public class ConsultaCommandServiceImpl implements ConsultaCommandService {
     public Optional<Consulta> handle(CreateConsultaCommand command) {
         Consulta consulta = new Consulta(command.mascotaId(), command.veterinarioId(), command.fecha(),
                 command.tipo(), command.subjetivo(), command.objetivo(), command.evaluacion(),
-                command.plan(), command.estado(), command.diagnostico());
+                command.plan(), command.estado(), command.diagnostico(), command.temperatura());
         return Optional.of(consultaRepository.save(consulta));
     }
 
     @Override
     public Optional<Consulta> update(Long id, CreateConsultaCommand command) {
-        return consultaRepository.findById(id).map(c -> {
+        return consultaRepository.findById(id).flatMap(c -> {
+            if (Boolean.TRUE.equals(c.getCerrada())) return Optional.empty();
             c.setMascotaId(command.mascotaId());
             c.setVeterinarioId(command.veterinarioId());
             c.setFecha(command.fecha());
@@ -38,6 +39,16 @@ public class ConsultaCommandServiceImpl implements ConsultaCommandService {
             c.setPlan(command.plan());
             c.setEstado(command.estado());
             c.setDiagnostico(command.diagnostico());
+            c.setTemperatura(command.temperatura());
+            return Optional.of(consultaRepository.save(c));
+        });
+    }
+
+    @Override
+    public Optional<Consulta> cerrar(Long id) {
+        return consultaRepository.findById(id).map(c -> {
+            c.setCerrada(true);
+            c.setEstado("CERRADA");
             return consultaRepository.save(c);
         });
     }

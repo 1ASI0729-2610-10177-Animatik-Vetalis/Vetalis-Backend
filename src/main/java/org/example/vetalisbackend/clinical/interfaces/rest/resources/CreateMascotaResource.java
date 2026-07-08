@@ -23,6 +23,8 @@ public record CreateMascotaResource(
         @NotBlank @Size(max = 20)
         String estado,
 
+        String alergias,
+
         @NotNull
         Long clienteId,
 

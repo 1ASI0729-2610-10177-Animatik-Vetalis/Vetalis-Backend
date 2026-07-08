@@ -9,4 +9,5 @@ public interface MascotaQueryService {
     Optional<Mascota> findById(Long id);
     List<Mascota> findAll();
     List<Mascota> findByClienteId(Long clienteId);
+    List<Mascota> findByNombre(String nombre);
 }

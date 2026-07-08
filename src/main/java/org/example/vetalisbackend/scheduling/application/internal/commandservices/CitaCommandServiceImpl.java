@@ -6,6 +6,7 @@ import org.example.vetalisbackend.scheduling.domain.repositories.CitaRepository;
 import org.example.vetalisbackend.scheduling.application.commandservices.CitaCommandService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,11 @@ public class CitaCommandServiceImpl implements CitaCommandService {
 
     @Override
     public Optional<Cita> handle(CreateCitaCommand command) {
+        LocalDateTime ventanaInicio = command.fecha().minusMinutes(29);
+        LocalDateTime ventanaFin = command.fecha().plusMinutes(29);
+        boolean conflicto = citaRepository.existsByVeterinarioIdAndFechaBetween(
+                command.veterinarioId(), ventanaInicio, ventanaFin);
+        if (conflicto) return Optional.empty();
         Cita cita = new Cita(command.mascotaId(), command.veterinarioId(), command.fecha(),
                 command.motivo(), command.tipo(), command.estado());
         return Optional.of(citaRepository.save(cita));

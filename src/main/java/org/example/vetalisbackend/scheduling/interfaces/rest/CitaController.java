@@ -38,7 +38,7 @@ public class CitaController {
         return citaCommandService.handle(command)
                 .map(c -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(CitaResourceFromEntityAssembler.fromDomainModel(c)))
-                .orElse(ResponseEntity.badRequest().build());
+                .orElse(ResponseEntity.status(HttpStatus.CONFLICT).build());
     }
 
     @GetMapping

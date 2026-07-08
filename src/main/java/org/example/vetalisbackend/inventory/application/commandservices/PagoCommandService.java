@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface PagoCommandService {
     Optional<Pago> handle(CreatePagoCommand command);
     Optional<Pago> update(Long id, CreatePagoCommand command);
+    Optional<Pago> anular(Long id, String motivo);
     void deleteById(Long id);
 }

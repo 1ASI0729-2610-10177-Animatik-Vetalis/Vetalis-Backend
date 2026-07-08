@@ -12,5 +12,6 @@ public record CreateConsultaCommand(
         String evaluacion,
         String plan,
         String estado,
-        String diagnostico
+        String diagnostico,
+        Double temperatura
 ) {}

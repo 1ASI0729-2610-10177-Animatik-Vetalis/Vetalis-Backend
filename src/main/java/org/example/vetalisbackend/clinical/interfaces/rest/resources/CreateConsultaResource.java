@@ -35,5 +35,7 @@ public record CreateConsultaResource(
         String estado,
 
         @Size(max = 500)
-        String diagnostico
+        String diagnostico,
+
+        Double temperatura
 ) {}

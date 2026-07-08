@@ -9,6 +9,7 @@ public record MascotaResource(
         LocalDate fechaNacimiento,
         Double peso,
         String estado,
+        String alergias,
         Long clienteId,
         Long razaId
 ) {}

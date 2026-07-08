@@ -3,6 +3,7 @@ package org.example.vetalisbackend.clinical.interfaces.rest;
 import org.example.vetalisbackend.clinical.application.queryservices.ConsultaQueryService;
 import org.example.vetalisbackend.clinical.application.queryservices.HospitalizacionQueryService;
 import org.example.vetalisbackend.clinical.application.queryservices.VacunaQueryService;
+import org.example.vetalisbackend.clinical.domain.repositories.ConsultaRepository;
 import org.example.vetalisbackend.clinical.interfaces.rest.resources.ConsultaResource;
 import org.example.vetalisbackend.clinical.interfaces.rest.resources.HospitalizacionResource;
 import org.example.vetalisbackend.clinical.interfaces.rest.resources.VacunaResource;
@@ -23,19 +24,30 @@ public class HistorialClinicoController {
     private final ConsultaQueryService consultaQueryService;
     private final VacunaQueryService vacunaQueryService;
     private final HospitalizacionQueryService hospitalizacionQueryService;
+    private final ConsultaRepository consultaRepository;
 
     public HistorialClinicoController(ConsultaQueryService consultaQueryService,
                                       VacunaQueryService vacunaQueryService,
-                                      HospitalizacionQueryService hospitalizacionQueryService) {
+                                      HospitalizacionQueryService hospitalizacionQueryService,
+                                      ConsultaRepository consultaRepository) {
         this.consultaQueryService = consultaQueryService;
         this.vacunaQueryService = vacunaQueryService;
         this.hospitalizacionQueryService = hospitalizacionQueryService;
+        this.consultaRepository = consultaRepository;
     }
 
     @GetMapping("/{mascotaId}")
-    public ResponseEntity<Map<String, Object>> getHistorial(@PathVariable Long mascotaId) {
-        List<ConsultaResource> consultas = consultaQueryService.findByMascotaId(mascotaId).stream()
-                .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+    public ResponseEntity<Map<String, Object>> getHistorial(
+            @PathVariable Long mascotaId,
+            @RequestParam(required = false) String tipo) {
+        List<ConsultaResource> consultas;
+        if (tipo != null && !tipo.isBlank()) {
+            consultas = consultaRepository.findByMascotaIdAndTipo(mascotaId, tipo).stream()
+                    .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+        } else {
+            consultas = consultaRepository.findByMascotaIdOrderByFechaDesc(mascotaId).stream()
+                    .map(ConsultaResourceFromEntityAssembler::fromDomainModel).toList();
+        }
         List<VacunaResource> vacunas = vacunaQueryService.findByMascotaId(mascotaId).stream()
                 .map(VacunaResourceFromEntityAssembler::fromDomainModel).toList();
         List<HospitalizacionResource> hospitalizaciones = hospitalizacionQueryService.findByMascotaId(mascotaId).stream()

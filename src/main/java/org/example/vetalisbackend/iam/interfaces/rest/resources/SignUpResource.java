@@ -24,5 +24,7 @@ public record SignUpResource(
         String telefono,
 
         @Size(max = 100)
-        String especialidad
+        String especialidad,
+
+        String role
 ) {}

@@ -34,8 +34,9 @@ public class UserCommandServiceImpl implements UserCommandService {
         }
         String displayName = command.firstName() + " " + command.lastName();
         String passwordHash = hashingService.encode(command.password());
+        Role role = "ADMIN".equalsIgnoreCase(command.role()) ? Role.ADMIN : Role.VETERINARIAN;
         User user = new User(command.email(), passwordHash, displayName,
-                command.dni(), command.telefono(), command.especialidad(), Role.VETERINARIAN);
+                command.dni(), command.telefono(), command.especialidad(), role);
         return Optional.of(userRepository.save(user));
     }
 

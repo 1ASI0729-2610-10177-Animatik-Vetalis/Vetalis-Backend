@@ -30,19 +30,13 @@ public class DataSeeder implements CommandLineRunner {
 
     private void seedUser(String email, String password, String displayName, Role role) {
         String hash = hashingService.encode(password);
-        userRepository.findByUsername(email).ifPresentOrElse(
-            existing -> {
-                // Siempre sincroniza hash y rol para que las credenciales demo sean siempre correctas
-                existing.setPasswordHash(hash);
-                existing.setRole(role);
-                userRepository.save(existing);
-                System.out.println("[DataSeeder] Usuario actualizado: " + email + " (" + role + ")");
-            },
-            () -> {
-                User user = new User(email, hash, displayName, null, null, "Medicina General", role);
-                userRepository.save(user);
-                System.out.println("[DataSeeder] Usuario creado: " + email + " (" + role + ")");
-            }
-        );
+        if (userRepository.existsByUsername(email)) {
+            userRepository.updateCredentials(email, hash, role);
+            System.out.println("[DataSeeder] Credenciales actualizadas: " + email + " (" + role + ")");
+        } else {
+            User user = new User(email, hash, displayName, null, null, "Medicina General", role);
+            userRepository.save(user);
+            System.out.println("[DataSeeder] Usuario creado: " + email + " (" + role + ")");
+        }
     }
 }

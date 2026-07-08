@@ -7,5 +7,6 @@ public record SignUpCommand(
         String password,
         String dni,
         String telefono,
-        String especialidad
+        String especialidad,
+        String role
 ) {}

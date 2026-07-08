@@ -51,14 +51,18 @@ public class AuthController {
 
     @PostMapping("/sign-in")
     public ResponseEntity<AuthenticatedUserResource> signIn(@RequestBody @Valid SignInResource resource) {
-        SignInCommand command = SignInCommandFromResourceAssembler.toCommand(resource);
-        Optional<String[]> result = userCommandService.handle(command);
-        return result.map(arr -> {
-            String token = arr[0];
-            String role = arr[1];
-            Long id = Long.parseLong(arr[2]);
-            return ResponseEntity.ok(new AuthenticatedUserResource(id, resource.username(), token, role));
-        }).orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+        try {
+            SignInCommand command = SignInCommandFromResourceAssembler.toCommand(resource);
+            Optional<String[]> result = userCommandService.handle(command);
+            return result.map(arr -> {
+                String token = arr[0];
+                String role = arr[1];
+                Long id = Long.parseLong(arr[2]);
+                return ResponseEntity.ok(new AuthenticatedUserResource(id, resource.username(), token, role));
+            }).orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 
     @GetMapping("/verify")

@@ -67,4 +67,7 @@ public class User {
     public Role getRole() { return role; }
     public Date getCreatedAt() { return createdAt; }
     public Date getUpdatedAt() { return updatedAt; }
+
+    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public void setRole(Role role) { this.role = role; }
 }

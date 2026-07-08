@@ -4,6 +4,7 @@ import org.example.vetalisbackend.clinical.application.commandservices.VacunaCom
 import org.example.vetalisbackend.clinical.domain.model.commands.CreateVacunaCommand;
 import org.example.vetalisbackend.clinical.domain.model.entities.Vacuna;
 import org.example.vetalisbackend.clinical.domain.repositories.VacunaRepository;
+import org.example.vetalisbackend.inventory.domain.repositories.MedicamentoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,9 +13,12 @@ import java.util.Optional;
 public class VacunaCommandServiceImpl implements VacunaCommandService {
 
     private final VacunaRepository vacunaRepository;
+    private final MedicamentoRepository medicamentoRepository;
 
-    public VacunaCommandServiceImpl(VacunaRepository vacunaRepository) {
-        this.vacunaRepository = vacunaRepository;
+    public VacunaCommandServiceImpl(VacunaRepository vacunaRepository,
+                                    MedicamentoRepository medicamentoRepository) {
+        this.vacunaRepository    = vacunaRepository;
+        this.medicamentoRepository = medicamentoRepository;
     }
 
     @Override
@@ -22,7 +26,16 @@ public class VacunaCommandServiceImpl implements VacunaCommandService {
         Vacuna vacuna = new Vacuna(command.mascotaId(), command.tipoVacunaId(), command.nombreVacuna(),
                 command.lote(), command.fechaAplicacion(), command.proximaDosis(),
                 command.estado(), command.veterinarioId());
-        return Optional.of(vacunaRepository.save(vacuna));
+        Optional<Vacuna> saved = Optional.of(vacunaRepository.save(vacuna));
+        // Deducir stock del medicamento usado como vacuna
+        if (command.tipoVacunaId() != null) {
+            medicamentoRepository.findById(command.tipoVacunaId()).ifPresent(med -> {
+                int nuevoStock = Math.max(0, med.getStockActual() - 1);
+                med.setStockActual(nuevoStock);
+                medicamentoRepository.save(med);
+            });
+        }
+        return saved;
     }
 
     @Override

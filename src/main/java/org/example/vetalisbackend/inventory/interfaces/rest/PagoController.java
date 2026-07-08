@@ -40,8 +40,10 @@ public class PagoController {
 
     @PostMapping
     public ResponseEntity<?> create(@RequestBody @Valid CreatePagoResource resource) {
-        CreatePagoCommand command = new CreatePagoCommand(resource.consultaId(), resource.monto(),
-                resource.metodoPago(), resource.fechaPago(), resource.estado(),
+        CreatePagoCommand command = new CreatePagoCommand(resource.consultaId(), resource.mascotaId(),
+                resource.monto(), resource.montoOriginal(), resource.descripcion(),
+                resource.metodoPago(), resource.metodoPago2(), resource.monto2(),
+                resource.fechaPago(), resource.estado(),
                 resource.medicamentoId(), resource.cantidad(), resource.descuento());
         try {
             return pagoCommandService.handle(command)
@@ -69,8 +71,10 @@ public class PagoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PagoResource> update(@PathVariable Long id, @RequestBody @Valid CreatePagoResource resource) {
-        CreatePagoCommand command = new CreatePagoCommand(resource.consultaId(), resource.monto(),
-                resource.metodoPago(), resource.fechaPago(), resource.estado(),
+        CreatePagoCommand command = new CreatePagoCommand(resource.consultaId(), resource.mascotaId(),
+                resource.monto(), resource.montoOriginal(), resource.descripcion(),
+                resource.metodoPago(), resource.metodoPago2(), resource.monto2(),
+                resource.fechaPago(), resource.estado(),
                 resource.medicamentoId(), resource.cantidad(), resource.descuento());
         return pagoCommandService.update(id, command)
                 .map(p -> ResponseEntity.ok(PagoResourceFromEntityAssembler.fromDomainModel(p)))

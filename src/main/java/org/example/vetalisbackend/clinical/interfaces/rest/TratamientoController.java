@@ -30,8 +30,8 @@ public class TratamientoController {
     @PostMapping
     public ResponseEntity<TratamientoResource> create(@RequestBody @Valid CreateTratamientoResource resource) {
         CreateTratamientoCommand command = new CreateTratamientoCommand(
-                resource.consultaId(), resource.medicamentoId(), resource.descripcion(),
-                resource.dosis(), resource.frecuencia(), resource.duracion());
+                resource.consultaId(), resource.medicamentoId(), resource.cantidad(),
+                resource.descripcion(), resource.dosis(), resource.frecuencia(), resource.duracion());
         return tratamientoCommandService.handle(command)
                 .map(t -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(TratamientoResourceFromEntityAssembler.fromDomainModel(t)))
@@ -63,8 +63,8 @@ public class TratamientoController {
     public ResponseEntity<TratamientoResource> update(@PathVariable Long id,
                                                        @RequestBody @Valid CreateTratamientoResource resource) {
         CreateTratamientoCommand command = new CreateTratamientoCommand(
-                resource.consultaId(), resource.medicamentoId(), resource.descripcion(),
-                resource.dosis(), resource.frecuencia(), resource.duracion());
+                resource.consultaId(), resource.medicamentoId(), resource.cantidad(),
+                resource.descripcion(), resource.dosis(), resource.frecuencia(), resource.duracion());
         return tratamientoCommandService.update(id, command)
                 .map(t -> ResponseEntity.ok(TratamientoResourceFromEntityAssembler.fromDomainModel(t)))
                 .orElse(ResponseEntity.notFound().build());

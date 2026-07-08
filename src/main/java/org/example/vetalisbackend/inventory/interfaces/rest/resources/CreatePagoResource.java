@@ -8,14 +8,23 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 public record CreatePagoResource(
-        @NotNull
         Long consultaId,
+
+        Long mascotaId,
 
         @NotNull @Positive
         Double monto,
 
+        Double montoOriginal,
+
+        String descripcion,
+
         @NotBlank @Size(max = 50)
         String metodoPago,
+
+        String metodoPago2,
+
+        Double monto2,
 
         @NotNull
         LocalDateTime fechaPago,

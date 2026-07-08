@@ -17,11 +17,15 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Long consultaId;
+    private Long mascotaId;
 
     private Double monto;
+    private Double montoOriginal;
+    private String descripcion;
     private String metodoPago;
+    private String metodoPago2;
+    private Double monto2;
     private LocalDateTime fechaPago;
     private String estado;
 
@@ -44,11 +48,18 @@ public class Pago {
 
     public Pago() {}
 
-    public Pago(Long consultaId, Double monto, String metodoPago, LocalDateTime fechaPago,
-                String estado, Long medicamentoId, Integer cantidad, Double descuento) {
+    public Pago(Long consultaId, Long mascotaId, Double monto, Double montoOriginal,
+                String descripcion, String metodoPago, String metodoPago2, Double monto2,
+                LocalDateTime fechaPago, String estado,
+                Long medicamentoId, Integer cantidad, Double descuento) {
         this.consultaId = consultaId;
+        this.mascotaId = mascotaId;
         this.monto = monto;
+        this.montoOriginal = montoOriginal;
+        this.descripcion = descripcion;
         this.metodoPago = metodoPago;
+        this.metodoPago2 = metodoPago2;
+        this.monto2 = monto2;
         this.fechaPago = fechaPago;
         this.estado = estado;
         this.medicamentoId = medicamentoId;
@@ -59,8 +70,13 @@ public class Pago {
 
     public Long getId() { return id; }
     public Long getConsultaId() { return consultaId; }
+    public Long getMascotaId() { return mascotaId; }
     public Double getMonto() { return monto; }
+    public Double getMontoOriginal() { return montoOriginal; }
+    public String getDescripcion() { return descripcion; }
     public String getMetodoPago() { return metodoPago; }
+    public String getMetodoPago2() { return metodoPago2; }
+    public Double getMonto2() { return monto2; }
     public LocalDateTime getFechaPago() { return fechaPago; }
     public String getEstado() { return estado; }
     public Long getMedicamentoId() { return medicamentoId; }
@@ -70,8 +86,13 @@ public class Pago {
     public String getMotivoAnulacion() { return motivoAnulacion; }
 
     public void setConsultaId(Long consultaId) { this.consultaId = consultaId; }
+    public void setMascotaId(Long mascotaId) { this.mascotaId = mascotaId; }
     public void setMonto(Double monto) { this.monto = monto; }
+    public void setMontoOriginal(Double montoOriginal) { this.montoOriginal = montoOriginal; }
+    public void setDescripcion(String descripcion) { this.descripcion = descripcion; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    public void setMetodoPago2(String metodoPago2) { this.metodoPago2 = metodoPago2; }
+    public void setMonto2(Double monto2) { this.monto2 = monto2; }
     public void setFechaPago(LocalDateTime fechaPago) { this.fechaPago = fechaPago; }
     public void setEstado(String estado) { this.estado = estado; }
     public void setMedicamentoId(Long medicamentoId) { this.medicamentoId = medicamentoId; }

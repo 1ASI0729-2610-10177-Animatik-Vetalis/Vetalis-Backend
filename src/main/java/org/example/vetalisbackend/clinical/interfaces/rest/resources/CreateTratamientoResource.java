@@ -9,6 +9,8 @@ public record CreateTratamientoResource(
 
         Long medicamentoId,
 
+        Integer cantidad,
+
         @Size(max = 1000)
         String descripcion,
 

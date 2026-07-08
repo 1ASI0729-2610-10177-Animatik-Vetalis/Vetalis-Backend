@@ -6,7 +6,7 @@ import org.example.vetalisbackend.clinical.interfaces.rest.resources.Tratamiento
 public class TratamientoResourceFromEntityAssembler {
     public static TratamientoResource fromDomainModel(Tratamiento t) {
         return new TratamientoResource(
-                t.getId(), t.getConsultaId(), t.getMedicamentoId(),
+                t.getId(), t.getConsultaId(), t.getMedicamentoId(), t.getCantidad(),
                 t.getDescripcion(), t.getDosis(), t.getFrecuencia(), t.getDuracion()
         );
     }

@@ -33,9 +33,11 @@ public class PagoCommandServiceImpl implements PagoCommandService {
             med.setStockActual(nuevoStock);
             medicamentoRepository.save(med);
         }
-        Pago pago = new Pago(command.consultaId(), command.monto(), command.metodoPago(),
-                command.fechaPago(), command.estado(), command.medicamentoId(),
-                command.cantidad(), command.descuento());
+        Pago pago = new Pago(command.consultaId(), command.mascotaId(),
+                command.monto(), command.montoOriginal(), command.descripcion(),
+                command.metodoPago(), command.metodoPago2(), command.monto2(),
+                command.fechaPago(), command.estado(),
+                command.medicamentoId(), command.cantidad(), command.descuento());
         return Optional.of(pagoRepository.save(pago));
     }
 
@@ -52,7 +54,7 @@ public class PagoCommandServiceImpl implements PagoCommandService {
             }
             p.setAnulado(true);
             p.setMotivoAnulacion(motivo);
-            p.setEstado("ANULADO");
+            p.setEstado("Anulado");
             return Optional.of(pagoRepository.save(p));
         });
     }
@@ -63,8 +65,13 @@ public class PagoCommandServiceImpl implements PagoCommandService {
         return pagoRepository.findById(id).flatMap(p -> {
             if (Boolean.TRUE.equals(p.getAnulado())) return Optional.empty();
             p.setConsultaId(command.consultaId());
+            p.setMascotaId(command.mascotaId());
             p.setMonto(command.monto());
+            p.setMontoOriginal(command.montoOriginal());
+            p.setDescripcion(command.descripcion());
             p.setMetodoPago(command.metodoPago());
+            p.setMetodoPago2(command.metodoPago2());
+            p.setMonto2(command.monto2());
             p.setFechaPago(command.fechaPago());
             p.setEstado(command.estado());
             return Optional.of(pagoRepository.save(p));

@@ -4,8 +4,13 @@ import java.time.LocalDateTime;
 
 public record CreatePagoCommand(
         Long consultaId,
+        Long mascotaId,
         Double monto,
+        Double montoOriginal,
+        String descripcion,
         String metodoPago,
+        String metodoPago2,
+        Double monto2,
         LocalDateTime fechaPago,
         String estado,
         Long medicamentoId,

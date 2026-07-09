@@ -8,5 +8,6 @@ public record DispensadorResource(
         String modelo,
         String estado,
         Double nivelAlimento,
-        LocalDateTime ultimaConexion
+        LocalDateTime ultimaConexion,
+        Long mascotaId
 ) {}

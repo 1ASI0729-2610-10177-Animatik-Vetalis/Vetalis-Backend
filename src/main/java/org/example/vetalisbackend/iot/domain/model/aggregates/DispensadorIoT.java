@@ -28,6 +28,7 @@ public class DispensadorIoT {
 
     private Double nivelAlimento;
     private LocalDateTime ultimaConexion;
+    private Long mascotaId;
 
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -60,4 +61,6 @@ public class DispensadorIoT {
     public void setEstado(EstadoDispensador estado) { this.estado = estado; }
     public void setNivelAlimento(Double nivelAlimento) { this.nivelAlimento = nivelAlimento; }
     public void setUltimaConexion(LocalDateTime ultimaConexion) { this.ultimaConexion = ultimaConexion; }
+    public Long getMascotaId() { return mascotaId; }
+    public void setMascotaId(Long mascotaId) { this.mascotaId = mascotaId; }
 }

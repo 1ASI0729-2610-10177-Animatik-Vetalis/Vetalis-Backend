@@ -11,7 +11,8 @@ public class DispensadorResourceFromEntityAssembler {
                 d.getModelo(),
                 d.getEstado() != null ? d.getEstado().name() : null,
                 d.getNivelAlimento(),
-                d.getUltimaConexion()
+                d.getUltimaConexion(),
+                d.getMascotaId()
         );
     }
 }

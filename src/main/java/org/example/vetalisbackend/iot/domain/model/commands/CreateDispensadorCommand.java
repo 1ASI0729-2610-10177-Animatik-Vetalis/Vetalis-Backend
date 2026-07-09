@@ -9,5 +9,6 @@ public record CreateDispensadorCommand(
         String modelo,
         EstadoDispensador estado,
         Double nivelAlimento,
-        LocalDateTime ultimaConexion
+        LocalDateTime ultimaConexion,
+        Long mascotaId
 ) {}

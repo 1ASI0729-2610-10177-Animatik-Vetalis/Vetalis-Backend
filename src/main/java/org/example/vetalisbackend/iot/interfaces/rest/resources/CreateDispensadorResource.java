@@ -19,5 +19,7 @@ public record CreateDispensadorResource(
         @PositiveOrZero
         Double nivelAlimento,
 
-        LocalDateTime ultimaConexion
+        LocalDateTime ultimaConexion,
+
+        Long mascotaId
 ) {}

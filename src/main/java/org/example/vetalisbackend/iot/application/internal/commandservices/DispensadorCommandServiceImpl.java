@@ -28,6 +28,7 @@ public class DispensadorCommandServiceImpl implements DispensadorCommandService 
     public Optional<DispensadorIoT> handle(CreateDispensadorCommand command) {
         DispensadorIoT d = new DispensadorIoT(command.numeroSerie(), command.modelo(),
                 command.estado(), command.nivelAlimento(), command.ultimaConexion());
+        d.setMascotaId(command.mascotaId());
         return Optional.of(dispensadorRepository.save(d));
     }
 
@@ -39,6 +40,7 @@ public class DispensadorCommandServiceImpl implements DispensadorCommandService 
             d.setEstado(command.estado());
             d.setNivelAlimento(command.nivelAlimento());
             d.setUltimaConexion(command.ultimaConexion());
+            d.setMascotaId(command.mascotaId());
             return dispensadorRepository.save(d);
         });
     }

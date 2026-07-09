@@ -34,7 +34,7 @@ public class DispensadorController {
         EstadoDispensador estado = resource.estado() != null
                 ? EstadoDispensador.valueOf(resource.estado()) : EstadoDispensador.INACTIVO;
         CreateDispensadorCommand command = new CreateDispensadorCommand(resource.numeroSerie(),
-                resource.modelo(), estado, resource.nivelAlimento(), resource.ultimaConexion());
+                resource.modelo(), estado, resource.nivelAlimento(), resource.ultimaConexion(), resource.mascotaId());
         return dispensadorCommandService.handle(command)
                 .map(d -> ResponseEntity.status(HttpStatus.CREATED)
                         .body(DispensadorResourceFromEntityAssembler.fromDomainModel(d)))
@@ -61,7 +61,7 @@ public class DispensadorController {
         EstadoDispensador estado = resource.estado() != null
                 ? EstadoDispensador.valueOf(resource.estado()) : EstadoDispensador.INACTIVO;
         CreateDispensadorCommand command = new CreateDispensadorCommand(resource.numeroSerie(),
-                resource.modelo(), estado, resource.nivelAlimento(), resource.ultimaConexion());
+                resource.modelo(), estado, resource.nivelAlimento(), resource.ultimaConexion(), resource.mascotaId());
         return dispensadorCommandService.update(id, command)
                 .map(d -> ResponseEntity.ok(DispensadorResourceFromEntityAssembler.fromDomainModel(d)))
                 .orElse(ResponseEntity.notFound().build());
